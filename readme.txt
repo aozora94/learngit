@@ -5,4 +5,5 @@ ver 2
 ver 3
 ver 4
 ver 5
-Creating a new branch is quick.
+Creating a new branch is quick!
+ver 6
