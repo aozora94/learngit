@@ -1,0 +1,3 @@
+自动补全templates模板中html的jinja2补全:
+右键templates模板将其标记为模板目录(Make Directory Path→Mark as Template folder)，进去后选择jinja2语言即可
+
