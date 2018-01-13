@@ -1,15 +1,15 @@
 ### 比较运算符:
 * ==：该运算符比较会自动转换数据类型再比较，比如
 
-    false == 0; //true
+        false == 0; //true
 
-* ===：该运算符比较不会自动转换数据类型，类型不一致为false,如果一致再进行比较,比如
+* ===(!==)：该运算符比较不会自动转换数据类型，类型不一致为false,如果一致再进行比较,比如
 
-    false === 0; //false
+        false === 0; //false
 
 * NaN：能判断NaN(无法计算结果)的方法只有使用isNaN()函数，如
 
-    isNaN(NaN); //true
+        isNaN(NaN); //true
 
 ----
 
@@ -24,55 +24,147 @@
 ### 字符串:
 * 如果浏览器支持ES6模板字符串，则可不使用+号连接字符串，而改用${}
 
-    var name = 'Tom';
+        var name = 'Tom';
     
-    console.log(\`My name is ${name}\`);  //My name is Tom,注意不是单引号'而是`
+        console.log(\`My name is ${name}\`);  //My name is Tom,注意不是单引号'而是`
 
 * 一些字符串方法，调用这些方法不会改变原有内容，而是返回一个新字符串.
 
-    var s = 'Hello,world!';
+        var s = 'Hello,world!';
     
-    s.toUpperCase();  //'HELLO,WORLD!'
+        s.toUpperCase();  //'HELLO,WORLD!'
 
-    s.toLowerCase();  //'hello,world!'
+        s.toLowerCase();  //'hello,world!'
 
-    s.indexOf('world');  //返回6，搜索指定字符串出现的位置，若不存在则返回-1
+        s.indexOf('world');  //返回6，搜索指定字符串出现的位置，若不存在则返回-1
 
-    s.substring(0,5);  //'Hello'，返回指定区间的子串
+        s.substring(0,5);  //'Hello'，返回指定区间的子串
 
 ---
 
 ### 数组:
 * JS的数组越界时不会报错，如通过索引赋值时如果越界赋值结果如下.
 
-    var arr = [1,2,3];
+        var arr = [1,2,3];
     
-    arr[4] = 4; //[1,2,3,undefined,4]
+        arr[4] = 4; //[1,2,3,undefined,4]
 
 * 一些数组方法:
 
-    var arr = [1,2,3,'a'];
+        var arr = [1,2,3,'a'];
 
-    arr.indexOf(3);  //返回2，搜索指定字符串出现的位置，若不存在则返回-1
+        arr.indexOf(3);  //返回2，搜索指定字符串出现的位置，若不存在则返回-1
 
-    arr.slice(0,3);  //返回[1,2,3]，如String的subString()
+        arr.slice(0,3);  //返回[1,2,3]，如String的subString()
 
-    arr.slice(2);  //返回[3,'a']，无参数时则返回所有元素，可用这点复制一个数组
+        arr.slice(2);  //返回[3,'a']，无参数时则返回所有元素，可用这点复制一个数组
 
-    arr.push('b'); //返回5，往数组末尾添加元素并返回长度
+        arr.push('b'); //返回5，往数组末尾添加元素并返回长度
 
-    arr.pop();  //返回'b'，删除数组末尾元素并返回被删元素
+        arr.pop();  //返回'b'，删除数组末尾元素并返回被删元素
 
-    arr.unshift(0);  //返回5，往数组头部添加元素并返回长度
+        arr.unshift(0);  //返回5，往数组头部添加元素并返回长度
 
-    arr.shift();  //返回0,删除数组头部元素并返回被删元素
+        arr.shift();  //返回0,删除数组头部元素并返回被删元素
 
-    arr.reverse();  //返回['a',3,2,1]，反转数组元素，会直接修改数组本身
+        arr.reverse();  //返回['a',3,2,1]，反转数组元素，会直接修改数组本身
 
-    arr.splice(1,2,'b','c'); //返回[3,2]，从索引1开始删除2个元素，并从索引1开始添加2个元素，返回被删数组
+        arr.splice(1,2,'b','c'); //返回[3,2]，从索引1开始删除2个元素，并从索引1开始添加2个元素，返回被删数组
  
-    arr.splice(3,0,'d');  //返回[]，因为没删除元素所以返回空数组，arr现为['a','b','c','d',1]
+        arr.splice(3,0,'d');  //返回[]，因为没删除元素所以返回空数组，arr现为['a','b','c','d',1]
 
-    arr.concat([2,3]); //返回一个连接了arr和[2,3]的数组，arr本身不改变
+        arr.concat([2,3]); //返回一个连接了arr和[2,3]的数组，arr本身不改变
 
-    arr.join('-');  //返回'a-b-c-d-1'，用指定的字符串把数组元素连接起来，并返回连接后的字符串
+        arr.join('-');  //返回'a-b-c-d-1'，用指定的字符串把数组元素连接起来，并返回连接后的字符串
+
+---
+
+### Map与Set
+
+
+
+* Map是一组键值对的结构，具有极快的查找速度。
+* 初始化Map需要一个二维数组，或者直接初始化一个空Map，以下为初始化以及方法例子.
+
+        //var m = new Map([['Michael', 95], ['Bob', 75], ['Tracy', 85]]);
+
+        var m = new Map(); // 空Map
+    
+        m.set('Adam', 67); // 添加新的key-value
+    
+        m.set('Bob', 59);
+    
+        m.has('Adam'); // 是否存在key 'Adam': true
+    
+        m.get('Adam'); // 67
+    
+        m.delete('Adam'); // 删除key 'Adam'
+
+* Set跟Map相比去掉了value，也具有极快的查找速度。
+* 初始化Set需要一维数组，或者直接初始化一个空Set，以下为初始化以及方法例子.
+
+        var s1 = new Set();  // 空Set
+
+        var s2 = new Set([1, 2, 3]);  //Set {1,2,3}
+
+        s2.add(4);  //Set {1,2,3,4}
+
+        s2.has(4);  //返回true
+
+        s2.delete(4);  //Set {1,2,3}
+
+* forEach(),该方法接收一个函数，每次迭代就自动回调该函数。例子如下.
+
+        var a = new Array('A','B','C');
+
+        function demo(elem, index, array){
+        console.log(`a[${index}] = ${elem}, array = ${array}`);
+        }
+        
+        a.forEach(demo);
+        //a[0] = A, array = A,B,C
+        //a[1] = B, array = A,B,C
+        //a[2] = C, array = A,B,C
+
+---
+
+### 函数
+
+* 注意js引擎在行末自动加分号的机制，如下例子。
+
+        function foo() {
+            return { name: 'foo' };
+        }
+        foo();  //{ name: 'foo' }
+
+        function foo() {
+            return      // 实际这里自动添加了;
+                { name: 'foo' };
+        }
+        foo();  //undefined
+
+* arguments:它只在函数内部起作用，并且永远指向当前函数的调用者传入的所有参数。
+
+        function foo(x){
+            console.log('x='+x);
+            for(var i=0;i<arguments.length;i++){
+                console.log(`arg ${i}=${arguments[i]}`);
+            }
+        }
+        foo(1,2,3);
+        //x=1
+        //arg 0=1
+        //arg 1=2
+        //arg 2=3
+
+* rest:获得定义参数以外的参数,rest参数只能写在最后，前面用`...`标识
+
+        function foo(a, b, ...rest) {
+            console.log('a = ' + a);
+            console.log('b = ' + b);
+            console.log(rest);
+        }
+        foo(1, 2, 3, 4, 5);
+        // a = 1
+        // b = 2
+        // Array [3,4,5]
