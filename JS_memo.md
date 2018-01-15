@@ -30,13 +30,17 @@
 
 * 一些字符串方法，调用这些方法不会改变原有内容，而是返回一个新字符串.
 
+        var a = '13579';
+
+        a.split(3);  //['1','579'],根据参数分割字符串
+
         var s = 'Hello,world!';
-    
+
         s.toUpperCase();  //'HELLO,WORLD!'
 
         s.toLowerCase();  //'hello,world!'
 
-        s.indexOf('world');  //返回6，搜索指定字符串出现的位置，若不存在则返回-1
+        s.indexOf('world');  //返回6，搜索指定字符串第一次出现的位置，若不存在则返回-1
 
         s.substring(0,5);  //'Hello'，返回指定区间的子串
 
@@ -168,3 +172,127 @@
         // a = 1
         // b = 2
         // Array [3,4,5]
+
+* window:不在任何函数内定义的变量就具有全局作用域,JavaScript默认有一个全局对象window，全局作用域的变量实际上被绑定到window的一个属性。
+
+        var msg = 'Hello World!';
+        alert(window.msg); // Hello World!
+
+* 命名冲突解决法:把自己的所有变量和函数全部绑定到一个全局变量中。
+
+        var MYAPP = {};
+        MYAPP.foo = function(x){return x+1;};
+        MYAPP.foo(1);  //2
+
+* 局部作用域：由于JavaScript的变量作用域实际上是函数内部，var无法申明一个局部作用域的变量，这个时候可以用`let`代替。
+
+        function foo() {
+            for (var i=0; i<100; i++) {}
+            i += 100; // 仍然可以引用变量i
+            }
+
+        function foo1() {
+            for (let i=0; i<100; i++) {}
+            i += 100;  //报错
+            }        
+        
+        foo();  //200
+        foo1();  //SyntaxError:
+
+* 解构赋值：使用解构赋值，直接对多个变量同时赋值。
+
+        var [x, ,[y,z]] = [1,2,[3,4]];
+        //x=1, y=3, z=4
+        
+        [x,y] = [y,x];
+        //x=3, y=1
+
+        var person = {
+        name: '小明',
+        age: 20,
+        gender: 'male',
+        passport: 'G-12345678',
+        address:{city:'Shenzhen'}
+        };
+
+        var {name,nickname=null,gender:sex,address:{city}} = person;
+        //name='小明',
+        //当不存在nickname属性时，nickname默认为null,
+        //把gender属性命名为sex, sex='male',
+        //city='Shenzhen'，注意内嵌属性,保证对应层次一致
+
+* apply：一般情况下，如果要单独调用函数，this会指向全局对象(window)。要指定函数的this指向哪个对象，可以用函数本身的apply方法，它接收两个参数，第一个参数就是需要绑定的this变量，第二个参数是Array，表示函数本身的参数。
+
+        function getAge() {
+            var y = new Date().getFullYear();
+            return y - this.birth;
+        }
+
+        var xiaoming = {
+            name: '小明',
+            birth: 1990,
+            age: getAge
+        };
+
+        xiaoming.age(); // 25
+        getAge.apply(xiaoming, []); // 25, this指向xiaoming, 参数为空
+
+另一个与apply()类似的方法是call()，唯一区别是：
+
+    apply()把参数打包成Array再传入；
+
+    call()把参数按顺序传入。
+
+对普通函数调用，我们通常把this绑定为null。比如调用Math.max(3, 5, 4)，分别用apply()和call()实现如下：
+
+    Math.max.apply(null, [3, 5, 4]); // 5
+    Math.max.call(null, 3, 5, 4); // 5
+
+可以利用apply()动态改变函数行为，做成装饰器，如下。
+
+        var count = 0;
+        var oldParseInt = parseInt; // 保存原函数
+        window.parseInt = function () {
+            count += 1;
+            return oldParseInt.apply(null, arguments); // 调用原函数
+        };
+
+        parseInt('10');
+        parseInt('20');
+        console.log('count = ' + count); // 2
+
+* map：map()方法定义在JavaScript的Array中，我们调用Array的map()方法，传入我们自己的函数，就得到了一个新的Array作为结果。
+
+        var arr = [1,2,3,4];
+        arr.map(String);  //['1','2','3','4']
+
+* reduce：Array的reduce()把一个函数作用在这个Array的[x1, x2, x3...]上，这个函数必须接收两个参数，reduce()把结果继续和序列的下一个元素做累积计算,如下：
+
+        [x1, x2, x3, x4].reduce(f) = f(f(f(x1, x2), x3), x4)
+
+利用map()和reduce(),把字符串'13579'转为列表[1,3,5,7,9]，再转成整型13579。
+
+        function string2int(s) {
+            var a = s.split('').map(function(x){return x-'';});
+            return a.reduce(function(x,y){return x*10+y;});
+        }
+
+* filter：filter()把传入的函数依次作用于每个元素，然后根据返回值是true还是false决定保留还是丢弃该元素。
+
+        var arr = ['a','b','c','d','a'];
+        var r = arr.filter(function (element, index, self) 
+        {
+            return self.indexOf(element) === index;
+        });
+        //r=['a','b','c','d']
+
+* sort：JS的sort()方法默认把所有元素先转换为String，根据ASCII码排序，所以如果对数组[3,2,1,10]排序则会变为[1,10,2,3]，sort可接收函数作为参数。
+
+        var arr = [10,20,1,2];
+
+        arr.sort(function(x,y){
+                if(x < y){return -1;}
+                if(x > y){return 1;}
+                return 0;
+        });
+        arr;  //[1,2,10,20]
